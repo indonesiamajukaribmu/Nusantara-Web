@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nusaweb — Pembuat Website Prabayar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#12143a;--bg2:#1b1e52;--ink:#f1f0fa;--mute:#a9abd3;--gold:#e3b04b;--jade:#34c3a0;--line:rgba(255,255,255,.16);--panel:rgba(255,255,255,.06);--on-gold:#12143a;--pat:.22;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f3fb;--bg2:#fff;--ink:#15173f;--mute:#555892;--gold:#b97e10;--jade:#12856b;--line:rgba(21,23,63,.18);--panel:rgba(21,23,63,.05);--on-gold:#fff;--pat:.35}}
+:root[data-theme="light"]{--bg:#f4f3fb;--bg2:#fff;--ink:#15173f;--mute:#555892;--gold:#b97e10;--jade:#12856b;--line:rgba(21,23,63,.18);--panel:rgba(21,23,63,.05);--on-gold:#fff;--pat:.35}
+:root[data-theme="dark"]{--bg:#12143a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Figtree,system-ui,sans-serif;overflow-x:hidden}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,system-ui,sans-serif;line-height:1.1;margin:0}
+.kawung{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23e3b04b' stroke-width='1.2'%3E%3Cellipse cx='28' cy='14' rx='8' ry='14'/%3E%3Cellipse cx='28' cy='42' rx='8' ry='14'/%3E%3Cellipse cx='14' cy='28' rx='14' ry='8'/%3E%3Cellipse cx='42' cy='28' rx='14' ry='8'/%3E%3Ccircle cx='28' cy='28' r='2.5' fill='%23e3b04b'/%3E%3C/g%3E%3C/svg%3E")}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+.logo{font:800 22px 'Bricolage Grotesque',sans-serif;display:flex;gap:10px;align-items:center}
+.logo i{width:30px;height:30px;border-radius:8px;background:var(--gold);display:grid;place-items:center;color:var(--on-gold);font-style:normal;font-size:16px}
+.saldo{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:99px;padding:6px 8px 6px 16px;background:var(--panel);font-weight:700}
+.saldo button{border:0;border-radius:99px;background:var(--gold);color:var(--on-gold);font-weight:700;padding:6px 14px;cursor:pointer;font-family:inherit}
+.hero{position:relative;border-radius:28px;overflow:hidden;padding:56px 36px;margin-top:8px;background:linear-gradient(135deg,var(--bg2),var(--bg));border:1px solid var(--line)}
+.hero:before{content:"";position:absolute;inset:0;opacity:var(--pat);-webkit-mask-image:linear-gradient(100deg,transparent 20%,#000);mask-image:linear-gradient(100deg,transparent 20%,#000)}
+.hero>*{position:relative}
+.hero h1{font-size:clamp(34px,6vw,68px);font-weight:800;max-width:15ch;letter-spacing:-.02em}
+.hero p{max-width:52ch;color:var(--mute);font-size:18px;margin:18px 0 26px}
+.btn{display:inline-block;border:0;border-radius:12px;padding:13px 22px;font:700 16px Figtree,sans-serif;cursor:pointer;background:var(--gold);color:var(--on-gold);text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);margin-left:8px}
+.btn:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--jade);outline-offset:2px}
+.steps{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:6px 16px 6px 8px;display:flex;align-items:center;gap:8px;font-weight:500;font-size:14px}
+.steps li:before{content:counter(s);width:24px;height:24px;border-radius:50%;background:var(--jade);color:#06231c;display:grid;place-items:center;font-weight:800;font-size:13px}
+section{padding:0}
+section>h2,.wrap>h2{font-size:clamp(26px,4vw,40px);font-weight:800}
+.lead{color:var(--mute);max-width:60ch;margin:10px 0 26px}
+.jenis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:22px}
+.jenis button{text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:16px;padding:14px;cursor:pointer;font-family:inherit;font-size:14px;position:relative;overflow:hidden}
+.jenis button b{display:block;font:700 17px 'Bricolage Grotesque',sans-serif}
+.jenis button span{color:var(--mute)}
+.jenis button i{display:block;height:6px;width:46px;border-radius:9px;margin-bottom:10px}
+.jenis button[aria-pressed=true]{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset}
+.studio{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--mute);padding:7px 14px;cursor:pointer;font-family:inherit;font-weight:700}
+.seg button[aria-pressed=true]{background:var(--gold);color:var(--on-gold)}
+.hint{color:var(--mute);font-size:14px}
+.stage{border:1px solid var(--line);border-radius:20px;background:var(--panel);padding:18px;display:flex;justify-content:center;min-height:440px}
+.browser{width:100%;max-width:100%;transition:max-width .35s;border-radius:12px;overflow:hidden;background:#fff;color:#1b1b2a;box-shadow:0 18px 50px rgba(0,0,0,.35);align-self:flex-start}
+.browser.m{max-width:330px}
+.chrome{background:#e7e7f0;padding:9px 12px;display:flex;gap:10px;align-items:center;font-size:12px;color:#555}
+.chrome u{display:flex;gap:5px;text-decoration:none}.chrome u b{width:9px;height:9px;border-radius:50%;background:#bbb}
+.chrome span{flex:1;background:#fff;border-radius:99px;padding:3px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.site nav{display:flex;justify-content:space-between;padding:14px 20px;font-weight:700;font-size:14px}
+.site nav small{font-weight:500;opacity:.7}
+.sh{position:relative;padding:44px 24px;color:#fff;overflow:hidden}
+.sh:before{content:"";position:absolute;inset:0;opacity:.3}
+.sh>*{position:relative}
+.sh h3{font-size:clamp(24px,4vw,38px);font-weight:800;outline:none;max-width:16ch}
+.sh h3:focus{outline:2px dashed #fff;outline-offset:6px}
+.sh p{margin:12px 0 18px;max-width:40ch;opacity:.92}
+.sh a{display:inline-block;padding:10px 18px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;padding:20px}
+.cards div{border:1px solid #e0e0ea;border-radius:12px;padding:14px;font-size:14px}
+.cards div:before{content:"";display:block;height:46px;border-radius:8px;margin-bottom:10px;background-size:28px;opacity:.9}
+.site footer{padding:14px 20px;font-size:12px;color:#777;border-top:1px solid #eee}
+.panel{border:1px solid var(--line);border-radius:20px;background:var(--bg2);padding:18px;position:sticky;top:12px}
+.panel h3{font-size:20px;margin-bottom:12px}
+.panel label{display:block;font-weight:700;font-size:14px;margin:14px 0 6px}
+.sub{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden}
+.sub input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);padding:11px 12px;font:inherit;outline-offset:-2px}
+.sub span{padding:0 12px;color:var(--mute);font-size:14px}
+.ring{display:flex;justify-content:space-between;padding:12px 0;border-top:1px dashed var(--line);margin-top:14px;font-weight:700}
+.topup{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.topup button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:9px;cursor:pointer;font:700 14px Figtree,sans-serif}
+.topup button:hover{border-color:var(--jade)}
+.pay{display:flex;gap:6px;margin-top:8px;font-size:12px;color:var(--mute);flex-wrap:wrap}
+.pay b{border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-weight:500}
+.in{width:100%;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);padding:10px 12px;font:inherit}.proj{display:flex;justify-content:space-between;gap:8px;align-items:center;border-top:1px dashed var(--line);padding:8px 0;font-size:14px}.proj button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:8px;padding:3px 10px;cursor:pointer;font-family:inherit}.acct{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:18px;align-items:start}.card{position:relative;overflow:hidden;border-radius:22px;padding:24px;background:linear-gradient(140deg,#2a2f7a,#12143a);color:#f1f0fa;border:1px solid var(--line);min-height:210px}.card:before{content:"";position:absolute;inset:0;opacity:.25;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23e3b04b' stroke-width='1.2'%3E%3Cellipse cx='28' cy='14' rx='8' ry='14'/%3E%3Cellipse cx='28' cy='42' rx='8' ry='14'/%3E%3Cellipse cx='14' cy='28' rx='14' ry='8'/%3E%3Cellipse cx='42' cy='28' rx='14' ry='8'/%3E%3C/g%3E%3C/svg%3E")}.card>*{position:relative}.card small{opacity:.75}.card .no{font:700 20px 'Bricolage Grotesque',sans-serif;letter-spacing:.06em;margin:4px 0 18px;word-break:break-all}.card .sd{font:800 34px 'Bricolage Grotesque',sans-serif}.mut{border:1px solid var(--line);border-radius:18px;background:var(--bg2);padding:6px 18px;max-height:360px;overflow:auto}.mr{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:14px}.mr:last-child{border:0}.mr b.k{color:var(--jade)}.mr b.d{color:#ff8a7a}.mr small{color:var(--mute);display:block}@media(max-width:900px){.acct{grid-template-columns:1fr}}
+.lb{display:block;font-weight:700;font-size:14px;margin:14px 0 6px}select.in{appearance:auto}.app{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;padding:22px 14px;display:flex;flex-direction:column;gap:6px;background:var(--bg2);border-right:1px solid var(--line);z-index:5}
+.side .logo{margin:0 8px 22px}.logo.mob{display:none}
+.nb{display:flex;align-items:center;gap:12px;border:0;background:transparent;color:var(--mute);padding:12px 14px;border-radius:14px;font:600 15px Figtree,sans-serif;cursor:pointer;text-align:left}
+.nb:hover{background:var(--panel);color:var(--ink)}.nb.on{background:var(--gold);color:var(--on-gold)}
+.main{padding:0 28px 40px;max-width:1180px;width:100%;margin:0 auto}
+.view{display:none}.view.on{display:block}.view section{padding:0}.view>h2{font-size:30px;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:16px}
+.stat{border:1px solid var(--line);border-radius:18px;padding:16px 18px;background:var(--bg2)}.stat small{color:var(--mute)}.stat b{display:block;font:800 26px 'Bricolage Grotesque',sans-serif;margin-top:4px}
+.quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0 44px}
+.quick button{text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:18px;padding:18px;cursor:pointer;font-family:inherit}
+.quick button:hover{border-color:var(--gold)}.quick b{display:block;font:700 18px 'Bricolage Grotesque',sans-serif}.quick span{color:var(--mute);font-size:14px}
+.view>section>h2{font-size:28px}.hero{padding:44px 32px}
+.view .why{margin-top:12px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.side{position:fixed;left:0;right:0;bottom:0;top:auto;height:auto;flex-direction:row;justify-content:space-around;gap:0;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));border-right:0;border-top:1px solid var(--line)}.side .logo.dsk{display:none}.logo.mob{display:flex}.nb{flex-direction:column;gap:3px;padding:7px 10px;font-size:11px;border-radius:12px}.main{padding:0 16px calc(96px + env(safe-area-inset-bottom,0px))}}
+.tlds{display:flex;flex-wrap:wrap;gap:8px}.tlds button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:12px;padding:8px 12px;cursor:pointer;font:700 14px Figtree,sans-serif;text-align:left}.tlds button small{display:block;color:var(--mute);font-weight:500}.tlds button[aria-pressed=true]{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold) inset}.acct.toko{grid-template-columns:minmax(0,1fr) 340px}@media(max-width:900px){.acct.toko{grid-template-columns:1fr}}.mr b{word-break:break-all;text-align:right}.msg{min-height:22px;margin-top:10px;font-size:14px;font-weight:500}
+.msg.err{color:#ff8a7a}.msg.ok{color:var(--jade)}
+.live{display:none;margin-top:12px;border:1px solid var(--jade);border-radius:12px;padding:12px;background:rgba(52,195,160,.1);font-size:14px;word-break:break-all}
+.paket{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.pk{position:relative;border:1px solid var(--line);border-radius:22px;padding:22px;background:var(--bg2);display:flex;flex-direction:column;cursor:pointer;text-align:left;color:var(--ink);font-family:inherit;overflow:hidden}
+.pk:after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;opacity:.28;background-image:inherit}
+.pk .kw{position:absolute;right:0;top:0;width:110px;height:110px;opacity:.25;-webkit-mask-image:radial-gradient(circle at 100% 0,#000,transparent 70%);mask-image:radial-gradient(circle at 100% 0,#000,transparent 70%)}
+.pk h3{font-size:22px}.pk .hr{font:800 30px 'Bricolage Grotesque',sans-serif;margin:10px 0 2px}.pk small{color:var(--mute)}
+.pk ul{padding:0;margin:14px 0 0;list-style:none;font-size:14px;display:grid;gap:7px}
+.pk li:before{content:"✓";color:var(--jade);font-weight:800;margin-right:8px}
+.pk[aria-pressed=true]{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+.pk em{position:absolute;left:22px;top:-1px;background:var(--gold);color:var(--on-gold);font:700 12px Figtree;font-style:normal;padding:3px 10px;border-radius:0 0 8px 8px}
+.pk{padding-top:30px}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.why div{border-left:3px solid var(--gold);padding:4px 0 4px 16px}
+.why h3{font-size:19px;margin-bottom:6px}.why p{margin:0;color:var(--mute);font-size:15px}
+footer.end{margin-top:70px;border-top:1px solid var(--line);padding:26px 0 40px;color:var(--mute);font-size:14px}
+.tt{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px}
+@media(max-width:900px){.studio{grid-template-columns:1fr}.panel{position:static}.hero{padding:36px 22px}.btn.ghost{margin:10px 0 0}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app"><nav class="side" aria-label="Menu utama"><div class="logo dsk"><i>N</i>Nusaweb</div><button class="nb on" data-go="home" ><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Beranda</span></button><button class="nb" data-go="buat" ><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg><span>Buat</span></button><button class="nb" data-go="toko"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l1-5h14l1 5"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/></svg><span>Toko</span></button><button class="nb" data-go="dompet" ><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/></svg><span>Dompet</span></button><button class="nb" data-go="paket" ><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9h8v8l-9 9z"/><circle cx="16" cy="8" r="1.5"/></svg><span>Paket</span></button><button class="nb" data-go="penjual" id="navP" style="display:none"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></svg><span>Penjual</span></button></nav><main class="main">
+<header class="top">
+  <div class="logo mob"><i>N</i>Nusaweb</div>
+  <a class="saldo" id="who" href="#" data-go="dompet" style="color:inherit;text-decoration:none">Masuk untuk rekening</a>
+</header>
+
+<div class="view on" id="v_home"><div class="hero kawung">
+  <h1>Bikin website, bayar di muka, tayang tanpa ribet.</h1>
+  <p>Susun website Anda, unduh file HTML-nya (asli, bisa dipasang di hosting mana pun), lalu pesan paket tayang prabayar lewat WhatsApp.</p>
+  <button class="btn" data-go="buat">Mulai buat website</button><button class="btn ghost" data-go="paket">Lihat paket</button>
+  <ol class="steps"><li>Pilih jenis website</li><li>Edit tulisan langsung</li><li>Unduh file</li><li>Bayar dari saldo rekening</li></ol>
+</div>
+
+
+<div class="stats"><div class="stat"><small>Saldo rekening</small><b id="st_s">Rp0</b></div><div class="stat"><small>Proyek tersimpan</small><b id="st_p">0</b></div><div class="stat"><small>Paket dipilih</small><b id="st_k">Bulanan</b></div></div>
+<div class="quick"><button data-go="buat"><b>Buat website</b><span>Pilih bentuk, isi, lalu unduh</span></button><button data-go="dompet"><b>Isi saldo</b><span>QRIS, bank, atau gerai ritel</span></button><button data-go="paket"><b>Pesan paket tayang</b><span>Bayar dari saldo</span></button><button data-go="toko"><b>Beli domain</b><span>.com, .id, .org, dan lainnya</span></button></div>
+<section>
+  <h2>Kenapa prabayar</h2>
+  <p class="lead">&nbsp;</p>
+  <div class="why">
+    <div><h3>Tanpa kartu kredit</h3><p>Cukup QRIS, transfer virtual account, atau dompet digital.</p></div>
+    <div><h3>File milik Anda</h3><p>Website yang diunduh bisa dipindah ke hosting mana pun, tanpa terkunci.</p></div>
+    <div><h3>Proyek tersimpan</h3><p>Masuk ke akun Claude Anda dan proyek tersimpan, siap diedit lagi kapan saja.</p></div>
+  </div>
+</section>
+
+</div><div class="view" id="v_buat"><section id="studio">
+  <h2>Pilih bentuk website Anda</h2>
+  <p class="lead">Enam bentuk yang paling sering dipakai. Pilih satu, pratinjau di tengah langsung berubah.</p>
+  <div class="jenis" id="jenis"></div>
+
+  <div class="studio">
+    <div>
+      <div class="bar">
+        <span class="hint">Ubah isi lewat kolom di sebelah kanan.</span>
+        <div class="seg" id="dev"><button data-d="d" aria-pressed="true">Komputer</button><button data-d="m" aria-pressed="false">Ponsel</button></div>
+      </div>
+      <div class="stage"><div class="browser" id="browser">
+        <div class="chrome"><u><b></b><b></b><b></b></u><span id="url"></span></div>
+        <div class="site" id="site"></div>
+      </div></div>
+    </div>
+
+    <aside class="panel" aria-label="Isi dan unduh">
+      <h3>Isi website Anda</h3>
+      <label for="f_t">Judul utama</label><input class="in" id="f_t">
+      <label for="f_s">Keterangan</label><input class="in" id="f_s">
+      <label for="f_b">Tulisan tombol</label><input class="in" id="f_b">
+      <label for="f_i">Tiga menu (pisahkan koma)</label><input class="in" id="f_i">
+      <label for="f_w">WhatsApp Anda (tombol akan membuka chat)</label><input class="in" id="f_w" inputmode="numeric" placeholder="6281234567890">
+      <label for="f_g">Kode pencatat pengunjung (GoatCounter, opsional)</label><input class="in" id="f_g" placeholder="mis. tokokopi"><div class="hint">Daftar gratis di goatcounter.com. Hanya menghitung jumlah kunjungan, tanpa mengenali orangnya.</div><label for="f_c">Warna utama</label><input class="in" id="f_c" type="color" style="height:42px;padding:3px">
+      <button class="btn" style="width:100%;margin-top:18px" id="dl">Unduh website (.html)</button>
+      <button class="btn ghost" style="width:100%;margin:8px 0 0" id="save">Simpan proyek</button>
+      <div class="msg" id="msg" role="status"></div>
+      <div id="projs"></div>
+    </aside>
+  </div>
+</section>
+
+</div><div class="view" id="v_toko"><h2>Toko website dan domain</h2>
+<p class="lead">Beli website jadi lengkap dengan alamat sendiri. Penjual mendaftarkan domain dan memasang website setelah Anda bayar.</p>
+<div class="acct toko"><div>
+<div class="seg" id="dmMode" style="display:flex"><button style="flex:1" data-dmode="own" aria-pressed="true">Domain sendiri</button><button style="flex:1" data-dmode="url" aria-pressed="false">Alamat lengkap (GitHub Pages, dll.)</button></div>
+<div id="dm_own"><label class="lb" for="dm_n">Nama domain</label>
+<div class="sub"><input id="dm_n" placeholder="indonesiamajukaribmu" maxlength="63" autocomplete="off" spellcheck="false"><span id="dm_x">.com</span></div>
+<label class="lb">Pilih akhiran</label><div class="tlds" id="tlds"></div></div>
+<div id="dm_url" style="display:none"><label class="lb" for="dm_u">Alamat website lengkap</label>
+<input class="in" id="dm_u" type="url" placeholder="https://indonesiamajukaribmu.github.io/Undangan-Digital-/" autocomplete="off" spellcheck="false">
+<div class="hint">Tempel alamat seperti di atas. Tidak ada biaya domain, Anda hanya membayar paket.</div></div>
+<label class="lb">Jenis website</label><div class="tlds" id="dm_t"></div>
+<label class="lb" for="dm_c">Catatan untuk penjual</label><input class="in" id="dm_c" placeholder="Mis. nama pengantin, warna, tanggal acara">
+<p class="hint" style="margin-top:14px">Harga domain per tahun adalah harga dari penjual dan bisa berubah. Ketersediaan nama dicek penjual sebelum didaftarkan. Domain .co.id membutuhkan dokumen usaha.</p>
+</div><div class="mut" style="padding:18px;max-height:none"><h3 style="font-size:22px;margin-bottom:8px">Ringkasan</h3><div id="dm_sum"></div>
+<button class="btn" id="dm_buy" style="width:100%;margin-top:14px">Bayar dari saldo</button>
+<a class="btn ghost" id="dm_wa" href="#" target="_blank" rel="noopener" style="width:100%;margin:8px 0 0;text-align:center">Tanya lewat WhatsApp</a></div></div>
+<div class="mut" style="margin-top:18px;padding:16px 18px;max-height:none"><b>Soal penghasilan dari kunjungan</b>
+<p class="hint" style="margin:6px 0 0">Kunjungan saja tidak menghasilkan uang. Penghasilan nyata datang dari margin penjualan website dan domain, iklan, atau afiliasi di dalam website. Pencatat kunjungan (di menu Buat) hanya menghitung jumlah pengunjung, tanpa mengenali siapa orangnya.</p></div>
+<div class="mut" style="margin-top:12px;padding:16px 18px;max-height:none"><b>Tayang gratis di internet</b>
+<p class="hint" style="margin:6px 0 0">File website yang diunduh bisa diunggah ke GitHub Pages, Cloudflare Pages, atau Netlify. Alamat sendiri seperti bes.com lalu dihubungkan lewat pengaturan domain di sana.</p></div>
+</div>
+<div class="view" id="v_dompet"><div class="seg" id="subseg" style="margin-bottom:16px"><button data-sub="rek" aria-pressed="true">Rekening</button><button data-sub="ts" aria-pressed="false">Isi saldo</button><button data-sub="tk" aria-pressed="false">Tarik tunai</button></div><section id="rekening">
+  <h2>Rekening Nusaweb</h2>
+  <p class="lead">Setiap akun punya nomor rekening dan buku mutasi sendiri. Saldo bertambah setelah penjual mencatat transfer Anda, dan berkurang saat Anda membeli paket.</p>
+  <div class="acct">
+    <div>
+      <div class="card"><small>Nomor rekening</small><div class="no" id="noRek">Masuk dulu</div><small>Saldo</small><div class="sd" id="saldoR">Rp0</div></div>
+      <div class="mut" style="padding:16px;margin-top:14px;max-height:none"><b>Daftar rekening dengan</b>
+      <div class="seg" id="regSeg" style="display:flex;margin-top:10px"><button style="flex:1" data-rg="gmail" aria-pressed="true">Akun Gmail</button><button style="flex:1" data-rg="wa" aria-pressed="false">Nomor WhatsApp</button></div>
+      <div id="rg_g" style="margin-top:12px"><input class="in" id="rg_e" type="email" placeholder="namaanda@gmail.com" autocomplete="email"><div class="hint" id="rg_eh"></div></div>
+      <div id="rg_w" style="display:none;margin-top:12px"><input class="in" id="rg_n" inputmode="tel" placeholder="081234567890"><div class="hint">Dipakai juga sebagai tujuan otomatis untuk tarik tunai di gerai dan e-wallet.</div></div>
+      <button class="btn" style="width:100%;margin-top:12px" id="sp">Simpan rekening</button>
+      <div class="hint" id="rg_s" style="margin-top:8px"></div></div>
+      <p class="hint">Cara isi saldo: transfer ke penjual, kirim nomor rekening Anda lewat WhatsApp, lalu saldo dicatat penjual.</p>
+    </div>
+    <div>
+      <div class="mut" id="mut"><div class="hint" style="padding:14px 0">Belum ada mutasi.</div></div>
+      
+    </div>
+  </div>
+</section>
+
+<section id="kas">
+    <div class="acct" style="grid-template-columns:minmax(0,560px)">
+    <div class="mut pn" id="pn_ts" style="padding:18px;max-height:none;display:none">
+      <h3 style="font-size:22px;margin-bottom:10px">Isi saldo</h3>
+      <label for="ts_m" class="lb">Metode</label><select class="in" id="ts_m"></select>
+      <img id="ts_q" alt="Kode QRIS penjual" style="display:none;width:100%;max-width:260px;margin:12px auto 0;border-radius:12px;background:#fff;padding:8px">
+      <div id="ts_i" class="hint" style="margin-top:10px;white-space:pre-line"></div>
+      <label for="ts_j" class="lb">Jumlah (minimal Rp10.000)</label><input class="in" id="ts_j" inputmode="numeric" placeholder="50000">
+      <button class="btn" style="width:100%;margin-top:14px" id="ts_go">Kirim konfirmasi pembayaran</button>
+      <p class="hint">Bayar dulu sesuai petunjuk, lalu tekan tombol ini. Saldo masuk setelah penjual mencatatnya.</p>
+    </div>
+    <div class="mut pn" id="pn_tk" style="padding:18px;max-height:none;display:none">
+      <h3 style="font-size:22px;margin-bottom:10px">Tarik tunai</h3>
+      <label for="tk_m" class="lb">Metode</label><select class="in" id="tk_m"></select>
+      <label for="tk_d" class="lb" id="tk_l">Tujuan</label><input class="in" id="tk_d">
+      <label for="tk_j" class="lb">Jumlah (minimal Rp10.000)</label><input class="in" id="tk_j" inputmode="numeric" placeholder="50000">
+      <button class="btn" style="width:100%;margin-top:14px" id="tk_go">Ajukan penarikan</button>
+      <p class="hint">Saldo langsung dipotong saat diajukan. Jika ditolak, saldo dikembalikan. Pencairan ke bank, QRIS, dan gerai ritel dilakukan penjual setelah mengecek pengajuan Anda.</p>
+    </div>
+  </div>
+  </section>
+
+</div><div class="view" id="v_paket"><section id="paket">
+  <h2>Paket prabayar</h2>
+  <p class="lead">Pilih paket, lalu tekan tombol di bawah. Pesanan terkirim ke WhatsApp penjual, pembayaran lewat transfer atau QRIS, dan website dipasang setelah bayar. Tidak diperpanjang otomatis.</p>
+  <div class="paket" id="paketGrid"></div>
+  <div style="margin-top:18px"><button class="btn" id="buy">Bayar dari saldo</button> <a class="btn ghost" id="order" href="#" target="_blank" rel="noopener">Pesan lewat WhatsApp</a><span class="hint" id="ordnote" style="margin-left:12px"></span></div>
+  
+</section>
+
+</div><div class="view" id="v_penjual"><h2>Penjual</h2><p class="lead">Halaman ini hanya muncul untuk pemilik. Atur nomor WhatsApp, petunjuk bayar, QRIS, dan catat uang masuk.</p><div id="adm" style="display:none;margin-top:18px;max-width:420px"><label for="f_a" style="font-weight:700;font-size:14px">Nomor WhatsApp penjual (hanya pemilik halaman)</label><input class="in" id="f_a" inputmode="numeric" placeholder="6281234567890"><button class="btn" style="margin-top:8px" id="sa">Simpan nomor</button></div><div id="adm2" style="display:none;margin-top:14px;border:1px solid var(--gold);border-radius:16px;padding:14px">
+        <b>Catat uang masuk (khusus penjual)</b>
+        <input class="in" id="c_no" placeholder="Nomor rekening, Gmail, atau WhatsApp pelanggan" style="margin-top:8px">
+        <input class="in" id="c_jm" inputmode="numeric" placeholder="Jumlah, mis. 50000" style="margin-top:8px">
+        <input class="in" id="c_nt" placeholder="Catatan, mis. Transfer 8 Okt" style="margin-top:8px">
+        <button class="btn" style="margin-top:10px" id="cr">Catat saldo masuk</button>
+      </div><div id="adm3" style="display:none;margin-top:18px;border:1px solid var(--gold);border-radius:16px;padding:16px">
+    <b>Pengaturan penjual</b>
+    <p class="hint">Isi petunjuk bayar tiap metode, misalnya nomor rekening BNI atau BSI, nomor virtual account, atau kode setor di gerai.</p>
+    <div id="insBox"></div>
+    <label class="lb" for="qf">Gambar QRIS Anda</label><input type="file" id="qf" accept="image/*" class="in">
+    <button class="btn" style="margin-top:10px" id="sv">Simpan pengaturan</button>
+    <h3 style="font-size:18px;margin:18px 0 6px">Pengajuan tarik tunai yang menunggu</h3>
+    <div id="tkList" class="hint">Memuat...</div><h3 style="font-size:18px;margin:18px 0 6px">Rekening penjual (pendapatan otomatis)</h3><div class="card" style="min-height:0;padding:18px"><small>Total pendapatan tercatat</small><div class="sd" id="jlTot">Rp0</div></div><div class="mut" id="jlList" style="margin-top:10px;max-height:240px"></div><h3 style="font-size:18px;margin:18px 0 6px">Pesanan website menunggu</h3><div id="psList" class="hint">Memuat...</div><div class="hint" id="psSum" style="margin-top:8px"></div><h3 style="font-size:18px;margin:18px 0 6px">Harga domain per tahun (Rp)</h3><div id="hgBox"></div><button class="btn" style="margin-top:10px" id="sh">Simpan harga</button>
+  </div>
+</div><footer class="end">File yang diunduh adalah website sungguhan. Pembayaran dilakukan manual lewat WhatsApp penjual; halaman ini tidak memproses uang.</footer>
+</div>
+
+</main></div>
+<script>
+var T=[
+{n:"Landing page",d:"Satu halaman, satu tujuan",c:"#1f6f5c",a:"#ffd166",t:"Kopi Senja, seduhan dari lereng Toraja",s:"Pesan biji kopi sangrai segar, dikirim ke seluruh Indonesia.",b:"Pesan sekarang",i:"Biji arabika, Kopi bubuk, Paket hadiah"},
+{n:"Toko online",d:"Etalase dan keranjang",c:"#a3262e",a:"#ffe3a3",t:"Batik tulis langsung dari perajin",s:"Motif asli, pewarna alami, ongkir dihitung otomatis.",b:"Belanja batik",i:"Kain panjang, Kemeja pria, Selendang"},
+{n:"Portofolio",d:"Pamerkan karya Anda",c:"#3b2f7a",a:"#a8f0d8",t:"Rudi Hartono, ilustrator dan desainer",s:"Karya terpilih untuk buku anak, kemasan, dan identitas merek.",b:"Lihat karya",i:"Buku anak, Kemasan, Logo"},
+{n:"Undangan digital",d:"Bagikan lewat tautan",c:"#7a2f4f",a:"#f6d28b",t:"Rina dan Dimas menikah, 20 Desember",s:"Gedung Phinisi, Makassar. Mohon konfirmasi kehadiran.",b:"Konfirmasi hadir",i:"Akad, Resepsi, Peta lokasi"},
+{n:"Profil usaha",d:"Tampil resmi dan tepercaya",c:"#0f4c81",a:"#ffd27a",t:"CV Layar Nusantara, jasa cetak dan pemasangan baliho",s:"Melayani Sulawesi Selatan sejak 2011.",b:"Minta penawaran",i:"Layanan, Klien kami, Hubungi"},
+{n:"Blog",d:"Tulisan rutin, mudah dicari",c:"#2b3a4a",a:"#9be7c4",t:"Catatan dari Makassar: kuliner, jalan, dan cerita",s:"Tulisan mingguan tentang tempat dan orang yang saya temui.",b:"Baca tulisan terbaru",i:"Kuliner, Perjalanan, Opini"}];
+var P=[
+{n:"Coba 1 hari",h:5000,u:"1 hari",e:"",f:["Alamat .nusaweb.id","Semua bentuk website","Cocok untuk uji coba"]},
+{n:"Bulanan",h:49000,u:"30 hari",e:"Paling dipilih",f:["Alamat .nusaweb.id","Formulir kontak","Statistik pengunjung"]},
+{n:"Kuartal",h:129000,u:"90 hari",e:"",f:["Semua fitur Bulanan","Alamat sendiri (domain .com)","Hemat 12%"]},
+{n:"Tahunan",h:399000,u:"365 hari",e:"Hemat 32%",f:["Semua fitur Kuartal","Prioritas bantuan","Cadangan harian"]}];
+var S={t:0,d:"d",p:1,f:null,adm:"",uid:null,db:null,dl:null,id:null};
+var $=function(i){return document.getElementById(i)};
+var rp=function(n){return "Rp"+n.toLocaleString("id-ID")};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+var KWD="url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.4'%3E%3Cellipse cx='28' cy='14' rx='8' ry='14'/%3E%3Cellipse cx='28' cy='42' rx='8' ry='14'/%3E%3Cellipse cx='14' cy='28' rx='14' ry='8'/%3E%3Cellipse cx='42' cy='28' rx='14' ry='8'/%3E%3C/g%3E%3C/svg%3E\")";
+var cs=document.createElement("style");cs.textContent=".sh:before,.cards div:before{background-image:"+KWD+"}.cards div:before{background-color:var(--c)}";document.head.appendChild(cs);
+function load(k){var x=T[k];S.t=k;S.id=null;S.f={t:x.t,s:x.s,b:x.b,i:x.i,w:"",c:x.c,a:x.a,g:""};fill();drawTypes();drawSite()}
+function fill(){$("f_t").value=S.f.t;$("f_s").value=S.f.s;$("f_b").value=S.f.b;$("f_i").value=S.f.i;$("f_w").value=S.f.w;$("f_c").value=S.f.c;$("f_g").value=S.f.g||""}
+function items(){return S.f.i.split(",").map(function(x){return x.trim()}).filter(Boolean).slice(0,3)}
+function cta(){return S.f.w?"https://wa.me/"+S.f.w:"#"}
+function drawTypes(){$("jenis").innerHTML=T.map(function(x,k){return '<button data-k="'+k+'" aria-pressed="'+(k==S.t)+'"><i style="background:'+x.c+'"></i><b>'+x.n+'</b><span>'+x.d+'</span></button>'}).join("")}
+function drawSite(){
+  var f=S.f,x=T[S.t];
+  $("site").innerHTML='<nav><span>'+esc(x.n)+'</span><small>Beranda &nbsp; Tentang &nbsp; Kontak</small></nav>'
+  +'<div class="sh" style="background:'+esc(f.c)+'"><h3>'+esc(f.t)+'</h3><p>'+esc(f.s)+'</p><a href="'+esc(cta())+'" onclick="return false" style="background:'+f.a+';color:#1b1b2a">'+esc(f.b)+'</a></div>'
+  +'<div class="cards" style="--c:'+esc(f.c)+'">'+items().map(function(y){return '<div><b>'+esc(y)+'</b><br><span style="color:#777">Lihat selengkapnya</span></div>'}).join("")+'</div>'
+  +'<footer>© 2026 '+esc(x.n)+' · dibuat dengan Nusaweb</footer>';
+  $("url").textContent="pratinjau website Anda";
+}
+function exportHtml(){
+  var f=S.f,x=T[S.t],it=items();
+  var kw="url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1.4'%3E%3Cellipse cx='28' cy='14' rx='8' ry='14'/%3E%3Cellipse cx='28' cy='42' rx='8' ry='14'/%3E%3Cellipse cx='14' cy='28' rx='14' ry='8'/%3E%3Cellipse cx='42' cy='28' rx='14' ry='8'/%3E%3C/g%3E%3C/svg%3E\")";
+  return '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(f.t)+'</title><style>body{margin:0;font:16px/1.6 system-ui,sans-serif;color:#1b1b2a}nav{display:flex;justify-content:space-between;padding:16px 24px;font-weight:700}.h{position:relative;background:'+esc(f.c)+';color:#fff;padding:72px 24px;overflow:hidden}.h:before{content:"";position:absolute;inset:0;opacity:.3;background-image:'+kw+'}.h>*{position:relative;max-width:720px;margin-left:auto;margin-right:auto}h1{font-size:clamp(30px,6vw,52px);line-height:1.1;margin:0 auto}.h p{font-size:18px}.h a{display:inline-block;background:'+f.a+';color:#1b1b2a;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none}.c{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;padding:32px 24px;max-width:960px;margin:0 auto}.c div{border:1px solid #e0e0ea;border-radius:14px;padding:20px;font-weight:700}footer{padding:20px 24px;color:#777;font-size:13px;border-top:1px solid #eee}</style></head><body><nav><span>'+esc(x.n)+'</span></nav><div class="h"><h1>'+esc(f.t)+'</h1><p>'+esc(f.s)+'</p><a href="'+esc(cta())+'">'+esc(f.b)+'</a></div><div class="c">'+it.map(function(y){return '<div>'+esc(y)+'</div>'}).join("")+'</div><footer>© 2026 · dibuat dengan Nusaweb</footer>'+(/^[a-z0-9-]{2,}$/.test(f.g||"")?'<script data-goatcounter="https://'+f.g+'.goatcounter.com/count" async src="//gc.zgo.at/count.js"><\/script>':'')+'</body></html>';
+}
+function msg(t,c){$("msg").textContent=t;$("msg").className="msg "+(c||"")}
+function drawPk(){
+  $("paketGrid").innerHTML=P.map(function(x,k){return '<button class="pk" data-p="'+k+'" aria-pressed="'+(k==S.p)+'">'+(x.e?'<em>'+x.e+'</em>':'')+'<div class="kw kawung"></div><h3>'+x.n+'</h3><div class="hr">'+rp(x.h)+'</div><small>untuk '+x.u+'</small><ul>'+x.f.map(function(f){return '<li>'+f+'</li>'}).join("")+'</ul></button>'}).join("");
+  var p=P[S.p],o=$("order");$("st_k").textContent=p.n;if($("tlds"))drawToko();
+  if(S.adm){o.href="https://wa.me/"+S.adm+"?text="+encodeURIComponent("Halo, saya mau pesan paket "+p.n+" ("+p.u+", "+rp(p.h)+") untuk website "+T[S.t].n+": "+S.f.t);o.style.opacity=1;$("ordnote").textContent=""}
+  else{o.href="#paket";o.style.opacity=.5;$("ordnote").textContent="Nomor penjual belum diisi."}
+}
+function drawProj(list){
+  $("projs").innerHTML=list.length?'<label>Proyek saya</label>'+list.map(function(d){return '<div class="proj"><span>'+esc(d.f.t.slice(0,26))+'</span><span><button data-o="'+d.id+'">Buka</button> <button data-x="'+d.id+'">Hapus</button></span></div>'}).join(""):"";
+}
+var cache=[];
+async function refresh(){
+  if(!S.db||!S.uid)return;
+  try{var q=await S.db.collection("data/users/"+S.uid).get();cache=q.docs.map(function(d){var v=d.data();return{id:d.id,t:v.t,f:v.f}});drawProj(cache);$("st_p").textContent=cache.length}catch(e){}
+}
+document.addEventListener("click",async function(e){
+  var b=e.target.closest("button");if(!b)return;
+  if(b.dataset.k!==undefined){load(+b.dataset.k);drawPk();msg("")}
+  else if(b.dataset.d){S.d=b.dataset.d;$("browser").classList.toggle("m",S.d=="m");document.querySelectorAll("#dev button").forEach(function(x){x.setAttribute("aria-pressed",x==b)})}
+  else if(b.dataset.p!==undefined){S.p=+b.dataset.p;drawPk()}
+  else if(b.id=="dl"){
+    if(!S.dl){msg("Unduhan tidak tersedia di tampilan ini.","err");return}
+    try{await S.dl.save({filename:"website-saya.html",data:exportHtml()});msg("File website siap dipakai.","ok")}catch(er){msg(er.code=="declined"?"Unduhan dibatalkan.":"Unduhan gagal.","err")}
+  }
+  else if(b.id=="save"){
+    if(!S.db||!S.uid){msg("Masuk ke akun Claude untuk menyimpan proyek.","err");return}
+    try{var ref=S.id?S.db.collection("data/users/"+S.uid).doc(S.id):S.db.collection("data/users/"+S.uid).doc();S.id=ref.id;await ref.set({t:S.t,f:S.f});msg("Proyek disimpan.","ok");refresh()}catch(er){msg("Gagal menyimpan. Coba lagi.","err")}
+  }
+  else if(b.dataset.o){var d=cache.filter(function(x){return x.id==b.dataset.o})[0];if(d){S.t=d.t;S.f=d.f;S.id=d.id;fill();drawTypes();drawSite();msg("Proyek dibuka.","ok")}}
+  else if(b.dataset.x){try{await S.db.collection("data/users/"+S.uid).doc(b.dataset.x).delete();if(S.id==b.dataset.x)S.id=null;refresh()}catch(er){}}
+  else if(b.id=="sa"){
+    var n=$("f_a").value.replace(/\D/g,"");if(n.length<9){alert("Nomor WhatsApp belum benar. Contoh: 6281234567890");return}
+    try{await S.db.doc("config/admin").set({wa:n});S.adm=n;drawPk()}catch(er){alert("Gagal menyimpan nomor.")}
+  }
+});
+["t","s","b","i","w","c","g"].forEach(function(k){$("f_"+k).addEventListener("input",function(){S.f[k]=k=="w"?this.value.replace(/\D/g,""):k=="g"?this.value.toLowerCase().replace(/[^a-z0-9-]/g,""):this.value;drawSite();if(k=="w"||k=="g")this.value=S.f[k]})});
+
+var akun={no:null,saldo:0};
+var dref=function(){return S.db.doc("data/users/"+S.uid+"/profile")};
+async function initAkun(){
+  akun.no="NW-"+S.uid.replace(/[^a-zA-Z0-9]/g,"").slice(-10).toUpperCase();
+  $("noRek").textContent=akun.no;
+  try{var r=S.db.doc("akun/"+akun.no);var s=await r.get();if(!s.exists)await r.set({uid:S.uid})}catch(e){}
+  await loadProf();
+  mutasi();
+}
+async function mutasi(){
+  try{
+    var k=await S.db.collection("topup/"+S.uid+"/entries").get().catch(function(){return{docs:[]}});
+    var d=await dref().collection("mutasi").get();
+    var all=[];
+    k.docs.forEach(function(x){var v=x.data();all.push({a:+v.amt,n:v.note||"Saldo masuk",ts:v.ts,k:1})});
+    d.docs.forEach(function(x){var v=x.data();all.push({a:+v.amt,n:v.note||"Pembelian",ts:v.ts,k:0})});
+    all.sort(function(a,b){return b.ts-a.ts});
+    akun.saldo=all.reduce(function(s,x){return s+(x.k?x.a:-x.a)},0);
+    $("saldoR").textContent=rp(akun.saldo);$("who").textContent="Saldo "+rp(akun.saldo);$("st_s").textContent=rp(akun.saldo);
+    $("mut").innerHTML=all.length?all.map(function(x){return '<div class="mr"><span>'+esc(x.n)+'<small>'+new Date(x.ts).toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})+'</small></span><b class="'+(x.k?"k":"d")+'">'+(x.k?"+":"-")+rp(x.a)+'</b></div>'}).join(""):'<div class="hint" style="padding:14px 0">Belum ada mutasi.</div>';
+  }catch(e){}
+}
+document.addEventListener("click",async function(e){
+  var b=e.target.closest("button");if(!b)return;
+  if(b.id=="buy"){
+    if(!S.db||!S.uid){alert("Masuk ke akun Claude dulu.");return}
+    var p=P[S.p];
+    if(akun.saldo<p.h){alert("Saldo kurang "+rp(p.h-akun.saldo)+". Isi saldo dulu.");return}
+    try{
+      await dref().collection("mutasi").add({amt:p.h,note:"Paket "+p.n+" ("+p.u+")",ts:Date.now()});await S.db.collection("jual").add({amt:p.h,s:1,note:"Paket "+p.n+" ("+p.u+")",ts:Date.now()});
+      await mutasi();
+      var u="https://wa.me/"+S.adm+"?text="+encodeURIComponent("Halo, rekening "+akun.no+" sudah membayar paket "+p.n+" ("+p.u+", "+rp(p.h)+"). Mohon pasang website: "+S.f.t);
+      if(S.adm)window.open(u,"_blank","noopener");else alert("Paket dibayar dari saldo. Nomor penjual belum diisi, hubungi penjual dan sebutkan rekening "+akun.no+".");
+    }catch(er){alert("Pembayaran gagal. Coba lagi.")}
+  }
+  else if(b.id=="sp"){
+    var via=rgMode,k;
+    if(via=="gmail"){k=$("rg_e").value.trim().toLowerCase();if(!/^[^@\s]+@gmail\.com$/.test(k)){alert("Isi alamat Gmail yang benar, mis. nama@gmail.com");return}}
+    else{k=normWa($("rg_n").value);if(k.length<10||k.length>15){alert("Nomor WhatsApp belum benar.");return}}
+    try{
+      akun.via=via;akun.kontak=k;
+      await dref().set({via:via,kontak:k,tuj:akun.tuj});
+      await S.db.doc("akun/"+akun.no).set({uid:S.uid,kontak:k,via:via});
+      rgInfo();autoTj();
+    }catch(er){alert("Gagal menyimpan. Coba lagi.")}
+  }
+  else if(b.id=="cr"){
+    var no=$("c_no").value.trim().toUpperCase(),jm=+$("c_jm").value.replace(/\D/g,"");
+    if(!no||jm<1){alert("Isi nomor rekening dan jumlah.");return}
+    try{
+      var a=await findAkun($("c_no").value);
+      if(!a.exists){alert("Nomor rekening tidak ditemukan. Minta pelanggan membuka halaman ini sekali.");return}
+      await S.db.collection("topup/"+a.data().uid+"/entries").add({amt:jm,note:$("c_nt").value||"Saldo masuk",ts:Date.now()});
+      alert("Tercatat: "+rp(jm)+" ke "+no);$("c_jm").value="";
+    }catch(er){alert("Gagal mencatat.")}
+  }
+});
+
+
+function normWa(s){var d=String(s).replace(/\D/g,"");if(d.indexOf("0")==0)d="62"+d.slice(1);else if(d.indexOf("8")==0)d="62"+d;return d}
+akun.via="";akun.kontak="";akun.tuj={};akun.emv=null;var rgMode="gmail";
+function rgSet(m){rgMode=m;document.querySelectorAll("#regSeg button").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.rg==m)});$("rg_g").style.display=m=="gmail"?"block":"none";$("rg_w").style.display=m=="wa"?"block":"none"}
+function rgInfo(){
+  if(!akun.kontak){$("rg_s").textContent="Rekening belum didaftarkan. Pilih Gmail atau WhatsApp, lalu simpan.";return}
+  var v=akun.via=="gmail"&&akun.kontak==akun.emv;
+  $("rg_s").textContent="Rekening aktif lewat "+(akun.via=="gmail"?"Gmail":"WhatsApp")+": "+akun.kontak+(v?" (email terverifikasi akun Anda)":" (belum diverifikasi)")
+}
+async function loadProf(){
+  try{var p=await dref().get();var d=p.exists?p.data():{};akun.via=d.via||"";akun.kontak=d.kontak||"";akun.tuj=d.tuj||{}}catch(e){}
+  try{var me=await S.u.me();akun.emv=me&&me.email?String(me.email).toLowerCase():null}catch(e){}
+  if(akun.via=="wa"){rgSet("wa");$("rg_n").value=akun.kontak}else{rgSet("gmail");$("rg_e").value=akun.via=="gmail"?akun.kontak:(akun.emv&&/@gmail\.com$/.test(akun.emv)?akun.emv:"")}
+  $("rg_eh").textContent=akun.emv&&/@gmail\.com$/.test(akun.emv)?"Terdeteksi dari akun Anda, jadi alamat ini terverifikasi.":"Belum terverifikasi: Nusaweb tidak bisa memastikan Gmail ini milik Anda.";
+  rgInfo();autoTj();
+}
+function autoTj(){
+  var m=$("tk_m").value,t=akun.tuj[m]||"",why="";
+  if(t)why="Terisi otomatis dari tujuan yang pernah Anda pakai.";
+  else if(akun.via=="wa"&&["qris","alfamart","alfamidi","indomaret"].indexOf(m)>-1){t=akun.kontak;why="Terisi otomatis dari nomor WhatsApp rekening Anda. Ubah jika perlu."}
+  else why="Belum ada tujuan tersimpan. Isi sekali, berikutnya terisi otomatis.";
+  $("tk_d").value=t;$("tk_h").textContent=why
+}
+async function findAkun(q){
+  q=q.trim();
+  if(/^NW-/i.test(q))return await S.db.doc("akun/"+q.toUpperCase()).get();
+  var v=q.indexOf("@")>-1?q.toLowerCase():normWa(q);
+  var r=await S.db.collection("akun").where("kontak","==",v).get();
+  return r.docs.length?{exists:true,data:function(){return r.docs[0].data()}}:{exists:false};
+}
+var M=[{k:"qris",n:"QRIS"},{k:"va",n:"Virtual Account"},{k:"bni",n:"Bank BNI"},{k:"bsi",n:"Bank BSI"},{k:"alfamart",n:"Alfamart"},{k:"alfamidi",n:"Alfamidi"},{k:"indomaret",n:"Indomaret"}];
+var TJ={qris:"Nama merchant atau nomor HP e-wallet penerima",va:"Nomor virtual account tujuan",bni:"Nomor rekening BNI dan nama pemilik",bsi:"Nomor rekening BSI dan nama pemilik",alfamart:"Nomor HP penerima kode tarik",alfamidi:"Nomor HP penerima kode tarik",indomaret:"Nomor HP penerima kode tarik"};
+S.ins={};S.qris="";var tkc=[];
+M.forEach(function(m){["ts_m","tk_m"].forEach(function(id){var o=document.createElement("option");o.value=m.k;o.textContent=m.n;$(id).appendChild(o)})});
+function showIns(){var k=$("ts_m").value;$("ts_i").textContent=S.ins[k]||"Penjual belum mengisi petunjuk untuk metode ini. Hubungi penjual lewat WhatsApp.";var q=$("ts_q");if(k=="qris"&&S.qris){q.src=S.qris;q.style.display="block"}else q.style.display="none"}
+function showTj(){$("tk_l").textContent=TJ[$("tk_m").value];autoTj()}
+$("ts_m").addEventListener("change",showIns);$("tk_m").addEventListener("change",showTj);$("tk_d").insertAdjacentHTML("afterend",'<div class="hint" id="tk_h"></div>');showIns();showTj();
+function mname(k){return M.filter(function(m){return m.k==k})[0].n}
+async function loadCfg(){
+  try{var a=await S.db.doc("config/instruksi").get();if(a.exists)S.ins=a.data()}catch(e){}
+  try{var q=await S.db.doc("config/qris").get();if(q.exists)S.qris=q.data().img}catch(e){}
+  try{var hg=await S.db.doc("config/harga").get();if(hg.exists)Object.assign(HG,hg.data())}catch(e){}
+  $("hgBox").innerHTML=TL.map(function(x){return '<label class="lb" for="hg_'+x+'">'+x+'</label><input class="in" id="hg_'+x+'" inputmode="numeric" value="'+(HG[x]||0)+'">'}).join("");drawToko();
+  showIns();
+  $("insBox").innerHTML=M.map(function(m){return '<label class="lb" for="in_'+m.k+'">'+m.n+'</label><input class="in" id="in_'+m.k+'" value="'+esc(S.ins[m.k]||"")+'">'}).join("");
+}
+function shrink(file){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var s=Math.min(1,520/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",.9))};im.onerror=no;im.src=r.result};r.onerror=no;r.readAsDataURL(file)})}
+async function loadTarik(){
+  try{var q=await S.db.collection("tarik").where("st","==","menunggu").get();tkc=q.docs.map(function(d){var v=d.data();v.id=d.id;return v});
+    $("tkList").innerHTML=tkc.length?tkc.map(function(v){return '<div class="mr"><span><b>'+mname(v.m)+'</b> '+rp(v.amt)+'<small>'+esc(v.no)+' · '+esc(v.dest)+'</small></span><span><button data-td="'+v.id+'">Selesai</button> <button data-tb="'+v.id+'">Batalkan</button></span></div>'}).join(""):"Tidak ada pengajuan."
+  }catch(e){$("tkList").textContent="Gagal memuat."}
+}
+document.addEventListener("click",async function(e){
+  var b=e.target.closest("button");if(!b)return;
+  if(b.id=="ts_go"){
+    var j=+$("ts_j").value.replace(/\D/g,"");if(j<10000){alert("Minimal Rp10.000.");return}
+    if(!S.adm){alert("Nomor WhatsApp penjual belum diisi.");return}
+    window.open("https://wa.me/"+S.adm+"?text="+encodeURIComponent("Halo, saya isi saldo "+rp(j)+" via "+mname($("ts_m").value)+". Rekening Nusaweb saya: "+(akun.no||"(belum masuk)")+(akun.kontak?", kontak "+akun.kontak:"")+". Bukti bayar saya lampirkan."),"_blank","noopener");
+  }
+  else if(b.id=="tk_go"){
+    if(!S.db||!S.uid){alert("Masuk ke akun Claude dulu.");return}
+    if(!akun.kontak){alert("Daftarkan rekening dulu (Gmail atau WhatsApp) di tab Rekening.");go("dompet");sub("rek");return}
+    var j2=+$("tk_j").value.replace(/\D/g,""),d=$("tk_d").value.trim();
+    if(j2<10000){alert("Minimal Rp10.000.");return}
+    if(d.length<5){alert("Isi tujuan dengan lengkap.");return}
+    if(akun.saldo<j2){alert("Saldo kurang "+rp(j2-akun.saldo)+".");return}
+    if(!confirm("Tarik "+rp(j2)+" via "+mname($("tk_m").value)+" ke "+d+"?"))return;
+    try{
+      var m=$("tk_m").value;
+      await dref().collection("mutasi").add({amt:j2,note:"Tarik tunai "+mname(m)+" (menunggu penjual)",ts:Date.now()});
+      await S.db.collection("tarik").add({uid:S.uid,no:akun.no,m:m,amt:j2,dest:d,st:"menunggu",ts:Date.now()});
+      $("tk_j").value="";akun.tuj[m]=d;try{await dref().set({via:akun.via,kontak:akun.kontak,tuj:akun.tuj})}catch(e2){}await mutasi();autoTj();
+      alert("Pengajuan terkirim. Penjual akan memprosesnya, lalu hubungi lewat WhatsApp jika perlu.");
+    }catch(er){alert("Pengajuan gagal. Coba lagi.")}
+  }
+  else if(b.id=="sv"){
+    var o={};M.forEach(function(m){o[m.k]=$("in_"+m.k).value});
+    try{
+      await S.db.doc("config/instruksi").set(o);S.ins=o;
+      var fl=$("qf").files[0];if(fl){var img=await shrink(fl);await S.db.doc("config/qris").set({img:img});S.qris=img}
+      showIns();alert("Pengaturan disimpan.");
+    }catch(er){alert("Gagal menyimpan. Gambar mungkin terlalu besar.")}
+  }
+  else if(b.dataset.td){try{await S.db.doc("tarik/"+b.dataset.td).update({st:"selesai"});loadTarik()}catch(er){alert("Gagal.")}}
+  else if(b.dataset.tb){
+    var v=tkc.filter(function(x){return x.id==b.dataset.tb})[0];if(!v)return;
+    try{
+      await S.db.collection("topup/"+v.uid+"/entries").add({amt:v.amt,note:"Pengembalian tarik tunai "+mname(v.m),ts:Date.now()});
+      await S.db.doc("tarik/"+v.id).update({st:"dibatalkan"});loadTarik();
+    }catch(er){alert("Gagal.")}
+  }
+});
+
+document.addEventListener("click",function(e){var r=e.target.closest("[data-rg]");if(r)rgSet(r.dataset.rg)});
+function go(v){document.querySelectorAll(".view").forEach(function(x){x.classList.toggle("on",x.id=="v_"+v)});document.querySelectorAll(".nb").forEach(function(x){x.classList.toggle("on",x.dataset.go==v)});window.scrollTo(0,0)}
+function sub(n){document.querySelectorAll("#subseg button").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.sub==n)});$("rekening").style.display=n=="rek"?"block":"none";$("pn_ts").style.display=n=="ts"?"block":"none";$("pn_tk").style.display=n=="tk"?"block":"none"}
+document.addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(g){e.preventDefault();go(g.dataset.go)}var s=e.target.closest("[data-sub]");if(s)sub(s.dataset.sub)});
+sub("rek");
+
+var TL=[".com",".id",".co.id",".my.id",".web.id",".biz.id",".org",".net",".xyz"];
+var HG={".com":160000,".id":300000,".co.id":400000,".my.id":35000,".web.id":40000,".biz.id":35000,".org":180000,".net":190000,".xyz":60000};
+var dm={x:".com",t:0,m:"own"},psc=[];
+function normUrl(s){s=String(s).trim();if(!s)return"";if(!/^https?:\/\//i.test(s))s="https://"+s;s=s.replace(/^http:\/\//i,"https://");try{var u=new URL(s);if(u.hostname.indexOf(".")<1)return"";return u.origin.toLowerCase()+u.pathname}catch(e){return""}}
+function drawToko(){
+  var p=P[S.p],url=dm.m=="url",dp=url?0:(HG[dm.x]||0),tot=p.h+dp,nm=url?(normUrl($("dm_u").value)||"https://namaanda.github.io/nama-website/"):($("dm_n").value||"namaanda")+dm.x;
+  $("dm_own").style.display=url?"none":"block";$("dm_url").style.display=url?"block":"none";
+  document.querySelectorAll("#dmMode button").forEach(function(x){x.setAttribute("aria-pressed",x.dataset.dmode==dm.m)});
+  $("dm_x").textContent=dm.x;
+  $("tlds").innerHTML=TL.map(function(x){return '<button data-tl="'+x+'" aria-pressed="'+(x==dm.x)+'">'+x+'<small>'+rp(HG[x]||0)+'</small></button>'}).join("");
+  $("dm_t").innerHTML=T.map(function(x,k){return '<button data-dt="'+k+'" aria-pressed="'+(k==dm.t)+'">'+x.n+'</button>'}).join("");
+  $("dm_sum").innerHTML='<div class="mr"><span>Alamat website</span><b>'+esc(nm)+'</b></div><div class="mr"><span>Jenis</span><b>'+esc(T[dm.t].n)+'</b></div><div class="mr"><span>'+(url?"Domain (alamat gratis)":"Domain 1 tahun")+'</span><b>'+rp(dp)+'</b></div><div class="mr"><span>Paket tayang<small>'+p.n+', '+p.u+' (ubah di menu Paket)</small></span><b>'+rp(p.h)+'</b></div><div class="mr"><span><b>Total</b></span><b>'+rp(tot)+'</b></div>';
+  $("dm_wa").href=S.adm?"https://wa.me/"+S.adm+"?text="+encodeURIComponent("Halo, saya tanya website "+T[dm.t].n+" dengan alamat "+nm+" dan paket "+p.n+"."):"#";
+}
+$("dm_u").addEventListener("input",drawToko);document.addEventListener("click",function(e){var m=e.target.closest("[data-dmode]");if(m){dm.m=m.dataset.dmode;drawToko()}});
+$("dm_n").addEventListener("input",function(){this.value=this.value.toLowerCase().replace(/[^a-z0-9-]/g,"");drawToko()});
+async function loadJl(){
+  try{
+    var q=await S.db.collection("jual").get(),a=q.docs.map(function(d){return d.data()}).sort(function(x,y){return y.ts-x.ts});
+    $("jlTot").textContent=rp(a.reduce(function(s,x){return s+(x.s<0?-x.amt:x.amt)},0));
+    $("jlList").innerHTML=a.length?a.slice(0,30).map(function(x){return '<div class="mr"><span>'+esc(x.note)+'<small>'+new Date(x.ts).toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})+'</small></span><b class="'+(x.s<0?"d":"k")+'">'+(x.s<0?"-":"+")+rp(x.amt)+'</b></div>'}).join(""):'<div class="hint" style="padding:12px 0">Belum ada pendapatan.</div>';
+  }catch(e){}
+}
+async function loadPs(){
+  loadJl();
+  try{
+    var q=await S.db.collection("pesan").where("st","==","menunggu").get();
+    psc=q.docs.map(function(d){var v=d.data();v.id=d.id;return v});
+    $("psList").innerHTML=psc.length?psc.map(function(v){return '<div class="mr"><span><b>'+esc(v.dom)+'</b> '+rp(v.total)+'<small>'+esc(v.tpl)+' · '+esc(v.paket)+' · '+esc(v.kontak)+(v.cat?' · '+esc(v.cat):'')+'</small></span><span><button data-pd="'+v.id+'">Selesai</button> <button data-pb="'+v.id+'">Batalkan</button></span></div>'}).join(""):"Tidak ada pesanan.";
+    var s=await S.db.collection("pesan").where("st","==","selesai").get(),om=0;
+    s.docs.forEach(function(d){om+=+d.data().total||0});
+    $("psSum").textContent="Pesanan selesai: "+s.docs.length+", omzet "+rp(om);
+  }catch(e){$("psList").textContent="Gagal memuat."}
+}
+document.addEventListener("click",async function(e){
+  var b=e.target.closest("button");if(!b)return;
+  if(b.dataset.tl){dm.x=b.dataset.tl;drawToko()}
+  else if(b.dataset.dt!==undefined){dm.t=+b.dataset.dt;drawToko()}
+  else if(b.id=="dm_buy"){
+    if(!S.db||!S.uid){alert("Masuk ke akun Claude dulu.");return}
+    if(!akun.kontak){alert("Daftarkan rekening dulu (Gmail atau WhatsApp) di tab Rekening.");go("dompet");sub("rek");return}
+    var p=P[S.p],dn,tot;
+    if(dm.m=="url"){dn=normUrl($("dm_u").value);if(!dn){alert("Isi alamat website yang benar, mis. https://nama.github.io/undangan/");return}tot=p.h}
+    else{var n0=$("dm_n").value;if(!/^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$/.test(n0)){alert("Nama domain: huruf kecil, angka, atau tanda hubung, tanpa spasi.");return}dn=n0+dm.x;tot=p.h+(HG[dm.x]||0)}
+    if(akun.saldo<tot){alert("Saldo kurang "+rp(tot-akun.saldo)+". Isi saldo dulu.");return}
+    if(!confirm("Bayar "+rp(tot)+" untuk "+dn+" dan paket "+p.n+"?"))return;
+    try{
+      await dref().collection("mutasi").add({amt:tot,note:"Website "+dn+" + paket "+p.n,ts:Date.now()});
+      await S.db.collection("jual").add({amt:tot,s:1,note:"Website "+dn,ts:Date.now()});await S.db.collection("pesan").add({uid:S.uid,no:akun.no,kontak:akun.kontak,dom:dn,tpl:T[dm.t].n,paket:p.n+" ("+p.u+")",total:tot,cat:$("dm_c").value,st:"menunggu",ts:Date.now()});
+      await mutasi();
+      if(S.adm)window.open("https://wa.me/"+S.adm+"?text="+encodeURIComponent("Halo, rekening "+akun.no+" sudah membayar "+rp(tot)+" untuk website "+T[dm.t].n+" dengan alamat "+dn+" (paket "+p.n+"). Catatan: "+($("dm_c").value||"-")),"_blank","noopener");
+      alert("Pesanan terkirim. Penjual akan mendaftarkan domain dan memasang website Anda.");
+    }catch(er){alert("Pesanan gagal. Coba lagi.")}
+  }
+  else if(b.dataset.pd){try{await S.db.doc("pesan/"+b.dataset.pd).update({st:"selesai"});loadPs()}catch(er){alert("Gagal.")}}
+  else if(b.dataset.pb){
+    var v=psc.filter(function(x){return x.id==b.dataset.pb})[0];if(!v)return;
+    try{await S.db.collection("topup/"+v.uid+"/entries").add({amt:v.total,note:"Pengembalian pesanan "+v.dom,ts:Date.now()});await S.db.collection("jual").add({amt:v.total,s:-1,note:"Pengembalian "+v.dom,ts:Date.now()});await S.db.doc("pesan/"+v.id).update({st:"dibatalkan"});loadPs()}catch(er){alert("Gagal.")}
+  }
+  else if(b.id=="sh"){
+    var o={};TL.forEach(function(x){o[x]=+($("hg_"+x).value.replace(/\D/g,""))||0});
+    try{await S.db.doc("config/harga").set(o);Object.assign(HG,o);drawToko();alert("Harga disimpan.")}catch(er){alert("Gagal menyimpan.")}
+  }
+});
+drawToko();
+load(0);drawPk();
+(async function(){
+  try{S.dl=await claude.use("downloads")}catch(e){}
+  try{
+    var u=await claude.use("user"),db=await claude.use("db");
+    if(u&&db){S.db=db;S.u=u;S.uid=await u.id();$("who").textContent="Akun Anda";
+      try{var a=await db.doc("config/admin").get();if(a.exists){S.adm=a.data().wa;drawPk()}}catch(e){}
+      if(u.isOwner()){$("adm").style.display="block";$("adm2").style.display="block"}
+      initAkun();loadCfg();if(u.isOwner()){$("navP").style.display="";$("adm3").style.display="block";loadTarik();loadPs()}
+      refresh()}
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
